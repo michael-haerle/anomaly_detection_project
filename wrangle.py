@@ -15,6 +15,10 @@ from scipy.stats import spearmanr
 from sklearn import metrics
 from random import randint
 
+# Vis Imports
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 # Custom Module Imports
 import env
 
@@ -158,3 +162,15 @@ def q5(df):
     page_by_student = page_by_student.groupby('user_id').sum('root_path_value_count')
 
     return page_by_student, active_df
+
+def vis5(page_by_student):
+    vis = page_by_student[page_by_student['root_path_value_count'] < 20]
+    vis2 = page_by_student[(page_by_student['root_path_value_count'] > 20) & (page_by_student['root_path_value_count'] < 150)]
+    plt.figure(figsize=(8, 8))
+    sns.scatterplot(data=vis, x=vis.index, y="root_path_value_count")
+    sns.scatterplot(data=vis2, x=vis2.index, y="root_path_value_count")
+    plt.ylim(0,150)
+    plt.title('There Are Roughly 20 Users That Have Less Then 20 Path Interactions')
+    plt.xlabel('User ID')
+    plt.ylabel("Root Path Value Count (Active User During Interaction)")
+    plt.show()
